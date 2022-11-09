@@ -1,8 +1,7 @@
 # API Insights
 [![API Insights Logo](https://user-images.githubusercontent.com/5516389/199577047-132e193d-2ce0-481d-b54e-c6e2729053f4.svg)](https://developer.cisco.com/site/api-insights/)
 
-[API Insights](https://developer.cisco.com/site/api-insights/) is a tool to enable organizations to manage versioned API specifications (Swagger 2.0/OpenAPI Spec 3.x) for services. It also does static analysis of API spec files for compliance against REST API best practices guidelines, document completeness, inclusive language check and runtime API drift from documented spec. To help API consumers and developers, API Insights service also supports generating an API changelog including identifica
-tion of backward compatibility breaking changes between 2 versions of API spec files.
+[API Insights](https://developer.cisco.com/site/api-insights/) is a tool to enable organizations to manage versioned API specifications (Swagger 2.0/OpenAPI Spec 3.x) for services. It also does static analysis of API spec files for compliance against REST API best practices guidelines, document completeness, inclusive language check and runtime API drift from documented spec. To help API consumers and developers, API Insights service also supports generating an API changelog including identification of backward compatibility breaking changes between 2 versions of API spec files.
 
 ## API Specifications Challenges
 
@@ -13,7 +12,7 @@ tion of backward compatibility breaking changes between 2 versions of API spec f
 
 ## Solution
 
-https://user-images.githubusercontent.com/5516389/200930930-e8191c24-cb46-4b29-9c4c-97a892a3d3a0.mov
+https://user-images.githubusercontent.com/5516389/200955566-95b6f53d-963a-4440-8c20-1b9f4aca68b1.mp4
 
 - API Insights service enables storing of multiple versions of released (& release candidate) API specifications.
 - Validate & Score API Spec against guidelines:   
