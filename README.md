@@ -13,6 +13,8 @@ tion of backward compatibility breaking changes between 2 versions of API spec f
 
 ## Solution
 
+https://user-images.githubusercontent.com/5516389/200930930-e8191c24-cb46-4b29-9c4c-97a892a3d3a0.mov
+
 - API Insights service enables storing of multiple versions of released (& release candidate) API specifications.
 - Validate & Score API Spec against guidelines:   
    - [API Insights REST guidelines](https://developer.cisco.com/docs/api-insights/#!rest-guidelines-ruleset)
@@ -24,6 +26,9 @@ tion of backward compatibility breaking changes between 2 versions of API spec f
 - API spec diff across multiple versions/revisions
   - Identify and alert on backward compatibility breaking changes.
   - API Insights CLI to enable running spec analyzer as a part of API spec CI/CD or local commit pipeline.
+
+
+
 
 ## User Flow and Architecture
 ![API Insights](docs/API-Insights-Solution-Diagram.png)
