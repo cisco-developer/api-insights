@@ -28,7 +28,7 @@ import {
 
 export default function TimelinePage() {
   const [timers] = useState({ refetchSpecTimerId: 0 });
-  const { selectedService } = useOutletContext() as AppFrameContext;
+  const { selectedService, refetchServiceList } = useOutletContext() as AppFrameContext;
   const {
     data: fullSpecList,
     isLoading: isSpecDataLoading,
@@ -48,6 +48,7 @@ export default function TimelinePage() {
   const isSnapshotLoading = isSpecDataLoading;
 
   const refetchSpecCompliance = () => {
+    refetchServiceList();
     refetchSpecList();
     refetchComplianceList();
   };

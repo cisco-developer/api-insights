@@ -133,6 +133,7 @@ export default function VersionReport(props: Props) {
 
   const revisonList = renderRevisionList();
   const trends = renderTrends();
+  const lastRevisionNoScore = lastRevision.score === undefined || lastRevision.score === null;
 
   const severitySummaryData = lastRevision.complianceList
     .filter((x) => x.analyzer !== 'drift')
@@ -144,7 +145,7 @@ export default function VersionReport(props: Props) {
         <div className="info-col">
           <div className="main-info">
             <div className="score-part">
-              <CircleScore value={lastRevision.score} />
+              <CircleScore value={lastRevision.score} progress={lastRevisionNoScore} />
             </div>
             <div className="info-part">
               <div className="spec-info">

@@ -26,17 +26,30 @@ type Props = HTMLAttributes<HTMLElement> & {
   thickness?: number;
   value?: number;
   darkTrack?: boolean;
+  progress?: boolean;
 };
 
 export default function CircleScore(props: Props) {
   const size = props.size || 56;
   const thickness = props.thickness || 4;
-  const value = props.value || 0;
+  const { value } = props;
 
   const style = {
     width: `${size}px`,
     height: `${size}px`,
   };
+
+  const scoreProgress = props.progress ? (
+    <div className="score-progress">
+      <CircularProgress
+        color="inherit"
+        variant="determinate"
+        size={size}
+        thickness={thickness}
+        value={20}
+      />
+    </div>
+  ) : null;
 
   return (
     <div className="circle-score" style={style}>
@@ -56,9 +69,10 @@ export default function CircleScore(props: Props) {
             variant="determinate"
             size={size}
             thickness={thickness}
-            value={value}
+            value={value || 0}
           />
         </div>
+        {scoreProgress}
       </ScoreLevel>
       <div className="value-label">{props.children || value}</div>
     </div>

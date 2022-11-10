@@ -16,11 +16,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+ @keyframes kf-score-progress {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+ }
+
 .circle-score {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  .score-progress {
+    color: rgba(255, 255, 255, 0.3);
+    animation: kf-score-progress linear 2s infinite;
+  }
 
   .circle-part {
     background-color: transparent;
@@ -28,7 +42,8 @@
 
   .circle-part,
   .score-track,
-  .score-value {
+  .score-value,
+  .score-progress {
     position: absolute;
     left: 0;
     right: 0;
