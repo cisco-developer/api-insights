@@ -33,13 +33,15 @@ const (
 	dummyServiceID     = "20000000-0000-0000-0000-000000000000"
 	dummyServiceNameID = "placeholder"
 
-	flagAnalyzer       = "analyzer"
-	flagFailBelowScore = "fail-below-score"
+	flagAnalyzer        = "analyzer"
+	flagFailBelowScore  = "fail-below-score"
+	flagFailOnErrorRule = "fail-on-error-rule"
 )
 
 var (
-	analyzer       string
-	failBelowScore int
+	analyzer        string
+	failBelowScore  int
+	failOnErrorRule bool
 )
 
 func init() {
@@ -69,6 +71,7 @@ func analyzeCmd() *cobra.Command {
 
 	cmd.Flags().StringVarP(&analyzer, flagAnalyzer, "a", "", "API spec analyzer")
 	cmd.Flags().IntVarP(&failBelowScore, flagFailBelowScore, "", 0, "Fail if API score is below specified score, defaults to 0")
+	cmd.Flags().BoolVarP(&failOnErrorRule, flagFailOnErrorRule, "", false, "Fail if there are any error findings")
 	err := viper.BindPFlags(cmd.Flags())
 	if err != nil {
 		logDebugln("Failed to bind flags", err.Error())
@@ -136,5 +139,9 @@ func analyzeSpec(cmd *cobra.Command, args []string) {
 		utils.ExitWithCode(utils.ExitFailBelowScore)
 	}
 
-	utils.ExitWithCode(res.ExitCode())
+	if failOnErrorRule && res.HasErrorFindings() {
+		utils.ExitWithCode(utils.ExitErrorBlockerFindings)
+	}
+
+	utils.ExitWithCode(utils.ExitSuccess)
 }

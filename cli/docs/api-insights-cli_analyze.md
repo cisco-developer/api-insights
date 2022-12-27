@@ -25,6 +25,7 @@ api-insights-cli analyze LOCAL_SPEC [flags]
 ```
   -a, --analyzer string        API spec analyzer
       --fail-below-score int   Fail if API score is below specified score, defaults to 0
+      --fail-on-error-rule     Fail if there are any error findings
   -h, --help                   help for analyze
 ```
 

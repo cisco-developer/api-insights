@@ -86,15 +86,15 @@ type SpecAnalysisResponse struct {
 	SpecScore int                            `json:"spec_score"`
 }
 
-// ExitCode returns exit code as per analysis findings
-func (s *SpecAnalysisResponse) ExitCode() int {
+// HasErrorFindings returns true if there are any error findings, otherwise false.
+func (s *SpecAnalysisResponse) HasErrorFindings() bool {
 	for _, analysis := range s.Results {
 		if analysis.Result.Summary.Stats.Error != nil && analysis.Result.Summary.Stats.Error.Count > 0 {
-			return utils.ExitErrorBlockerFindings
+			return true
 		}
 	}
 
-	return utils.ExitSuccess
+	return false
 }
 
 // Print prints results in console
