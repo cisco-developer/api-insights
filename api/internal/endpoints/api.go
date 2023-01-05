@@ -131,6 +131,11 @@ func API(cfg *shared.AppConfig) (*restful.Container, error) {
 	}
 	specDiffRes.Register(cfg, container, "/v1/apiregistry/specs/diffs")
 
+	specValidationRes := &specValidationResource{
+		config: cfg,
+	}
+	specValidationRes.Register(cfg, container, "/v1/apiregistry/specs/validations")
+
 	serviceDao, err := db.NewServiceDAO(cfg)
 	if err != nil {
 		return nil, err

@@ -87,7 +87,6 @@ func TestSpec_BeforeCreate(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -137,7 +136,6 @@ func TestSpec_GetID(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -209,7 +207,6 @@ func TestSpec_GetIndex(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -281,7 +278,6 @@ func TestSpec_GetIndexValue(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -335,7 +331,6 @@ func TestSpec_GetTags(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -371,7 +366,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 	type args struct {
 		ctx        context.Context
 		validate   bool
-		setDocType bool
 		setVersion bool
 	}
 	emptyDoc := ""
@@ -402,7 +396,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   false,
-				setDocType: false,
 				setVersion: false,
 			},
 			want:    nil,
@@ -427,7 +420,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   false,
-				setDocType: false,
 				setVersion: false,
 			},
 			want:    nil,
@@ -452,7 +444,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   false,
-				setDocType: false,
 				setVersion: false,
 			},
 			want:    &openapi3.T{},
@@ -477,7 +468,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   true,
-				setDocType: false,
 				setVersion: false,
 			},
 			want:    &openapi3.T{},
@@ -502,7 +492,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   true,
-				setDocType: false,
 				setVersion: true,
 			},
 			want:    &openapi3.T{},
@@ -527,7 +516,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   true,
-				setDocType: true,
 				setVersion: true,
 			},
 			want:    &openapi3.T{},
@@ -552,7 +540,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   false,
-				setDocType: true,
 				setVersion: true,
 			},
 			want:    &openapi3.T{},
@@ -577,7 +564,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			args: args{
 				ctx:        nil,
 				validate:   true,
-				setDocType: false,
 				setVersion: false,
 			},
 			want:    nil,
@@ -589,7 +575,6 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -600,17 +585,13 @@ func TestSpec_LoadDocAsOAS(t *testing.T) {
 				UpdatedAt: tt.fields.UpdatedAt,
 				DocOAS:    tt.fields.DocOAS,
 			}
-			got, err := m.LoadDocAsOAS(tt.args.ctx, tt.args.validate, tt.args.setDocType, tt.args.setVersion)
+			got, err := m.LoadDocAsOAS(tt.args.ctx, tt.args.validate, tt.args.setVersion)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("LoadDocAsOAS() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
 				assert.NotNil(t, got)
-
-				if tt.args.setDocType {
-					assert.NotEmpty(t, m.DocType)
-				}
 				if tt.args.setVersion {
 					assert.NotEmpty(t, m.Version)
 				}
@@ -671,7 +652,6 @@ func TestSpec_Sortable(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -719,7 +699,6 @@ func TestSpec_String(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,
@@ -767,7 +746,6 @@ func TestSpec_TableName(t *testing.T) {
 			m := &Spec{
 				ID:        tt.fields.ID,
 				Doc:       tt.fields.Doc,
-				DocType:   tt.fields.DocType,
 				Revision:  tt.fields.Revision,
 				Score:     tt.fields.Score,
 				ServiceID: tt.fields.ServiceID,

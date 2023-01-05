@@ -2,7 +2,6 @@ openapi: 3.0.3
 info:
   title: Sample API
   description: This is a sample API.
-  version: ''
   contact:
     name: Test
 servers:

@@ -18,6 +18,7 @@ package models
 
 import (
 	"context"
+	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 	"github.com/cisco-developer/api-insights/api/pkg/utils"
@@ -35,18 +36,18 @@ const (
 
 // Spec represents a spec
 type Spec struct {
-	ID            string    `json:"id,omitempty" gorm:"primaryKey"`
-	Doc           SpecDoc   `json:"doc" gorm:"column:doc"`
-	DocCompressed []byte    `json:"-" gorm:"column:doc_compressed"`
-	DocType       string    `json:"doc_type" gorm:"column:doc_type"`
-	Revision      string    `json:"revision" gorm:"column:revision;index"`
-	Score         *int      `json:"score" gorm:"column:score"`
-	ServiceID     string    `json:"service_id" gorm:"column:service_id;index"`
-	State         string    `json:"state" gorm:"column:state;index"` // Archive, Release, Development, Latest
-	Valid         string    `json:"valid" gorm:"column:valid"`
-	Version       string    `json:"version" gorm:"column:version;index"`
-	CreatedAt     time.Time `json:"created_at" gorm:"column:created_at"`
-	UpdatedAt     time.Time `json:"updated_at" gorm:"column:updated_at"`
+	ID            string       `json:"id,omitempty" gorm:"primaryKey"`
+	Doc           SpecDoc      `json:"doc" gorm:"column:doc"`
+	DocCompressed []byte       `json:"-" gorm:"column:doc_compressed"`
+	DocStats      SpecDocStats `json:"doc_stats" gorm:"column:doc_stats"`
+	Revision      string       `json:"revision" gorm:"column:revision;index"`
+	Score         *int         `json:"score" gorm:"column:score"`
+	ServiceID     string       `json:"service_id" gorm:"column:service_id;index"`
+	State         string       `json:"state" gorm:"column:state;index"` // Archive, Release, Development, Latest
+	Valid         string       `json:"valid" gorm:"column:valid"`
+	Version       string       `json:"version" gorm:"column:version;index"`
+	CreatedAt     time.Time    `json:"created_at" gorm:"column:created_at"`
+	UpdatedAt     time.Time    `json:"updated_at" gorm:"column:updated_at"`
 
 	DocOAS *openapi3.T `json:"-" gorm:"-"`
 	// internalDoc is an internal state variable for temporarily storing Spec.Doc between Spec.BeforeSave & Spec.AfterSave for data compression.
@@ -167,11 +168,10 @@ func (m *Spec) SortableFields() map[string]struct{} {
 	}
 }
 
-// LoadDocAsOAS loads Spec.Doc as an OpenAPI spec & stores it as Spec.DocOAS.
+// LoadDocAsOAS loads Spec.Doc as an OpenAPI spec & stores it as Spec.DocOAS & sets DocStats.
 // Set validate to validate Spec.DocOAS.
-// Set setDocType to derive Spec.DocType from Spec.DocOAS.Version.
 // Set setVersion to derive Spec.Version from Spec.DocOAS.Info.Version.
-func (m *Spec) LoadDocAsOAS(ctx context.Context, validate, setDocType, setVersion bool) (*openapi3.T, error) {
+func (m *Spec) LoadDocAsOAS(ctx context.Context, validate, setVersion bool) (*openapi3.T, error) {
 	if m.DocOAS != nil {
 		return m.DocOAS, nil
 	}
@@ -189,25 +189,45 @@ func (m *Spec) LoadDocAsOAS(ctx context.Context, validate, setDocType, setVersio
 			return nil, fmt.Errorf("spec: invalid Spec.Doc: %v", err)
 		}
 	}
-	if setDocType && m.DocType == "" {
-		var version string
-		if m.DocOAS.OpenAPI != "" {
-			version = m.DocOAS.OpenAPI
-		} else {
-			if swagger, ok := m.DocOAS.Extensions["swagger"]; ok {
-				if versionBytes, ok := swagger.(json.RawMessage); ok && len(versionBytes) > 0 {
-					version = strings.ReplaceAll(string(versionBytes), "\"", "")
-				}
-			}
-		}
-		m.DocType = fmt.Sprintf("oas-%v", version)
-	}
+
 	if setVersion && m.Version == "" {
 		if m.DocOAS.Info != nil && m.DocOAS.Info.Version != "" {
 			m.Version = m.DocOAS.Info.Version
 		}
 	}
+
+	m.setDocStats()
+
 	return m.DocOAS, nil
+}
+
+// setDocStats sets spec DocStats
+func (m *Spec) setDocStats() {
+	if m.DocOAS == nil {
+		return
+	}
+
+	var version string
+	if m.DocOAS.OpenAPI != "" {
+		version = m.DocOAS.OpenAPI
+	} else {
+		if swagger, ok := m.DocOAS.Extensions["swagger"]; ok {
+			if versionBytes, ok := swagger.(json.RawMessage); ok && len(versionBytes) > 0 {
+				version = strings.ReplaceAll(string(versionBytes), "\"", "")
+			}
+		}
+	}
+
+	var numberOfOperations int
+	for _, p := range m.DocOAS.Paths {
+		numberOfOperations += len(p.Operations())
+	}
+
+	m.DocStats = SpecDocStats{
+		SpecificationVersion: version,
+		NumberOfPaths:        len(m.DocOAS.Paths),
+		NumberOfOperations:   numberOfOperations,
+	}
 }
 
 // GetDocAsMap unmarshals Spec.Doc into a map by first parsing as a JSON & if that fails, as a YAML.
@@ -244,3 +264,24 @@ func NewSpecDocFromBytes(data []byte) SpecDoc {
 	s := string(data)
 	return &s
 }
+
+// SpecDocStats represents spec doc stats
+type SpecDocStats struct {
+	SpecificationVersion string `json:"specification_version"`
+	NumberOfPaths        int    `json:"number_of_paths"`
+	NumberOfOperations   int    `json:"number_of_operations"`
+}
+
+// Scan implements sql.Scanner interface.
+// See https://gorm.io/docs/data_types.html#Implements-Customized-Data-Type.
+func (m *SpecDocStats) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return fmt.Errorf("failed to unmarshal JSONB value: %v", value)
+	}
+	return json.Unmarshal(bytes, &m)
+}
+
+// Value implements driver.Valuer interface.
+// See https://gorm.io/docs/data_types.html#Implements-Customized-Data-Type.
+func (m SpecDocStats) Value() (driver.Value, error) { return json.Marshal(m) }

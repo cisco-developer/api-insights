@@ -73,6 +73,18 @@ func (r *specAnalysisResource) analyze(req *restful.Request, res *restful.Respon
 		return
 	}
 
+	vr, err := models.ValidateSpecDoc(req.Request.Context(), specAnalysisReq.Spec.Doc)
+	if err != nil {
+		shared.LogErrorf("failed to validate service (%v) spec: %#v", specAnalysisReq.Service.NameID, err)
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if !vr.Valid {
+		shared.LogErrorf("invalid service (%v) spec: %#v", specAnalysisReq.Service.NameID, vr.Findings)
+		_ = res.WriteHeaderAndEntity(http.StatusBadRequest, vr)
+		return
+	}
+
 	specAnalysisRes, err := r.analyzerSvc.Analyze(specAnalysisReq)
 	if err != nil {
 		shared.LogErrorf("failed to analyze service (%v) spec (%v): %#v", specAnalysisReq.Spec.ServiceID, specAnalysisReq.Spec.ID, err)

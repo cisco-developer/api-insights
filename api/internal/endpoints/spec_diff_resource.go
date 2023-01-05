@@ -79,6 +79,33 @@ func (r *specDiffResource) performDiff(req *restful.Request, res *restful.Respon
 		return
 	}
 
+	// validate old spec
+	vrOld, err := models.ValidateSpecDoc(req.Request.Context(), specDiffReq.OldSpecDoc)
+	if err != nil {
+		shared.LogErrorf("failed to validate spec: %#v", err)
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if !vrOld.Valid {
+		shared.LogErrorf("invalid spec: %#v", vrOld.Findings)
+		_ = res.WriteHeaderAndEntity(http.StatusBadRequest, vrOld)
+		return
+	}
+
+	// validate new spec
+	vrNew, err := models.ValidateSpecDoc(req.Request.Context(), specDiffReq.NewSpecDoc)
+	if err != nil {
+		shared.LogErrorf("failed to validate spec: %#v", err)
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if !vrNew.Valid {
+		shared.LogErrorf("invalid spec: %#v", vrNew.Findings)
+		_ = res.WriteHeaderAndEntity(http.StatusBadRequest, vrNew)
+		return
+	}
+
+	// diff old and new specs
 	result, err := r.differSvc.Diff(specDiffReq)
 	if err != nil {
 		shared.LogErrorf("failed to diff specs: %#v", err)

@@ -1,0 +1,7 @@
+# minimal ruleset for spec validation
+extends:
+  - [spectral:oas, off]
+
+rules:
+  oas2-schema: true
+  oas3-schema: true

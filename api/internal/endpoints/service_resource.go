@@ -516,7 +516,19 @@ func (r *serviceResource) saveSpec(req *restful.Request, res *restful.Response) 
 		return
 	}
 
-	if _, err := spec.LoadDocAsOAS(req.Request.Context(), false, true, true); err != nil {
+	vr, err := models.ValidateSpecDoc(req.Request.Context(), spec.Doc)
+	if err != nil {
+		shared.LogErrorf("failed to validate service (%v) spec: %#v", serviceID, err)
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if !vr.Valid {
+		shared.LogErrorf("invalid service (%v) spec: %#v", serviceID, vr.Findings)
+		_ = res.WriteHeaderAndEntity(http.StatusBadRequest, vr)
+		return
+	}
+
+	if _, err := spec.LoadDocAsOAS(req.Request.Context(), false, true); err != nil {
 		shared.LogErrorf("failed to load Spec.Doc as OAS from body: %#v", err)
 		_ = res.WriteErrorString(http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
@@ -1199,7 +1211,7 @@ func (r *serviceResource) reconstructSpec(req *restful.Request, res *restful.Res
 		UpdatedAt: now,
 	}
 
-	if _, err := spec.LoadDocAsOAS(req.Request.Context(), false, true, true); err != nil {
+	if _, err := spec.LoadDocAsOAS(req.Request.Context(), false, true); err != nil {
 		shared.LogErrorf("failed to load Spec.Doc as OAS from body: %#v", err)
 		_ = res.WriteErrorString(http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
