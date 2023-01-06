@@ -24,6 +24,8 @@ import (
 	"github.com/cisco-developer/api-insights/api/internal/models/analyzer"
 	"github.com/cisco-developer/api-insights/api/pkg/analyzer/apiclarity"
 	"github.com/cisco-developer/api-insights/api/pkg/analyzer/completeness"
+	"github.com/cisco-developer/api-insights/api/pkg/analyzer/contract"
+	"github.com/cisco-developer/api-insights/api/pkg/analyzer/documentation"
 	"github.com/cisco-developer/api-insights/api/pkg/analyzer/guidelines"
 	"github.com/cisco-developer/api-insights/api/pkg/analyzer/security"
 	"github.com/cisco-developer/api-insights/api/pkg/analyzer/woke"
@@ -100,6 +102,10 @@ func (s *service) Analyze(req *models.SpecAnalysisRequest) (*models.SpecAnalysis
 			analyzerClient, err = guidelines.NewClient()
 		case analyzer.Completeness:
 			analyzerClient, err = completeness.NewClient()
+		case analyzer.Contract:
+			analyzerClient, err = contract.NewClient()
+		case analyzer.Documentation:
+			analyzerClient, err = documentationp.NewClient()
 		case analyzer.InclusiveLanguage:
 			analyzerClient, err = woke.NewClient()
 		case analyzer.Drift:

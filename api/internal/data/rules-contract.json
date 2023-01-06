@@ -1,7 +1,7 @@
 [
   {
     "name_id": "oas2-schema",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Validate structure of OpenAPI v2 specification.",
     "description": "Malformed OAS document, not adhering to the OpenAPI v2 specifications.",
     "mitigation": "Please fix the items identified to adhere to the OpenAPI v2 specifications. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas23-schema-well-formed-openapi-document)",
@@ -9,7 +9,7 @@
   },
   {
     "name_id": "oas3-schema",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Validate structure of OpenAPI v3 specification.",
     "description": "Malformed OAS document, not adhering to the OpenAPI v3 specifications.",
     "mitigation": "Please fix the items detected to adhere to the OpenAPI v3 specifications. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas23-schema-well-formed-openapi-document)",
@@ -17,7 +17,7 @@
   },
   {
     "name_id": "oas3-missing-schema-definition",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "There is no schema attribute for a component.",
     "description": "Some schema definitions are missing.",
     "mitigation": "Please add schema definitions for the items detected. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas23-missing-schema-definition-missing-schema-definition)",
@@ -25,7 +25,7 @@
   },
   {
     "name_id": "oas2-missing-schema-definition",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "There is no schema attribute for a component.",
     "description": "Some schema definitions are missing.",
     "mitigation": "Please add schema definitions for the items detected. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas23-missing-schema-definition-missing-schema-definition)",
@@ -33,7 +33,7 @@
   },
   {
     "name_id": "general-schema-definition",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Some of the defined schema use object as a final field when describing their object structure. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/general-schema-definatio-generic-schema-definition)",
     "description": "Some schemas are partially defined.",
     "mitigation": "Please fully describe the schema for the items detected as using object.",
@@ -41,7 +41,7 @@
   },
   {
     "name_id": "oas3-missing-returned-representation",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "2XX (except 204) and 4xx responses must have a response schema defined.",
     "description": "Some responses do not define a schema.",
     "mitigation": "Please add a schema for the items detected. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas2-3-missing-returned-representation-missing-returned-representation)",
@@ -49,7 +49,7 @@
   },
   {
     "name_id": "oas2-missing-returned-representation",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "MRR – Missing Returned Representation. 2XX (except 204) and 4xx responses must have a response schema defined",
     "description": "Some responses do not define a schema.",
     "mitigation": "Please add a schema for the items detected.  [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas2-3-missing-returned-representation-missing-returned-representation)",
@@ -57,7 +57,7 @@
   },
   {
     "name_id": "success-status-code",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "For every operation in the OAS document, there should be at least one success status code defined.  A successful status code is in the 1xx, 2xx or 3xx range series, and generally a 200, 201 or 204.",
     "description": "Some operations do not define a success status code.",
     "mitigation": "Please add a success status code in the 1xx, 2xx or 3xx range for the items identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/success-status-code-missing-success-status-code)",
@@ -65,47 +65,23 @@
   },
   {
     "name_id": "error-status-code",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "There should be at least one error status code either 4xx or 5xx.",
     "description": "Some operations do not define errors.",
     "mitigation": "Please add an error status code for the items identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/error-status-code-missing-error-status-code)",
     "severity": "warning"
   },
   {
-    "name_id": "description-for-every-attribute",
-    "analyzer_name_id": "completeness",
-    "title": "DEA - Descriptions for Every Attribute",
-    "description": "Some attributes do not provide a description.",
-    "mitigation": "Please add a description for the items identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/description-for-every-attribute-descriptions-for-every-attribute)",
-    "severity": "warning"
-  },
-  {
-    "name_id": "oas-version",
-    "analyzer_name_id": "completeness",
-    "title": "The document must be specify the OAS version it is supporting.",
-    "description": "The version of OpenAPI is not specified.",
-    "mitigation": "Please add the version of the OpenAPI specified used along the OAS document provided. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/oas-version-version-of-the-oas-is-missing)",
-    "severity": "error"
-  },
-  {
     "name_id": "oas2-meta-info",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "The following fields must be present (note: list of fields depend on the OAS version)",
     "description": "Some OpenAPI meta information are missing.",
     "mitigation": "Please add the OpenAPI attributes identified as missing and provide values for these attributes. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset)",
     "severity": "error"
   },
   {
-    "name_id": "examples-for-every-schema",
-    "analyzer_name_id": "completeness",
-    "title": "For every schema provided in the OAS document, at least one example must be present",
-    "description": "Examples are not provided for some of the schemas.",
-    "mitigation": "Please add examples for the schemas identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/examples-for-every-schemaexamples-for-every-schema)",
-    "severity": "warning"
-  },
-  {
     "name_id": "info-contact",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Info object must have `contact` object.",
     "description": "Info object must have `contact` object.",
     "mitigation": "Please add missing `contact` object. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/meta-information-about-the-api-itself)",
@@ -113,7 +89,7 @@
   },
   {
     "name_id": "info-description",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Info object must have a non-empty `description`",
     "description": "Info object must have a non-empty `description`.",
     "mitigation": "Please add missing `description`. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/meta-information-about-the-api-itself)",
@@ -121,7 +97,7 @@
   },
   {
     "name_id": "info-license",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "Info object must have `license` object.",
     "description": "Info object must have `license` object.",
     "mitigation": "Please add missing `license` object. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/meta-information-about-the-api-itself)",
@@ -129,7 +105,7 @@
   },
   {
     "name_id": "license-url",
-    "analyzer_name_id": "completeness",
+    "analyzer_name_id": "contract",
     "title": "License object must have a `url`.",
     "description": "License object must have a `url`.",
     "mitigation": "Please add missing `url`. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/meta-information-about-the-api-itself)",

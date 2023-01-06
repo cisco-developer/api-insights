@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package completeness
+package contract
 
 import (
 	"github.com/cisco-developer/api-insights/api/internal/models"
@@ -24,23 +24,23 @@ import (
 	"github.com/urfave/cli/v2/altsrc"
 )
 
-// completenessRuleset represents custom spectral ruleset for completeness.
-var completenessRuleset = "node_modules/@cisco-developer/api-insights-openapi-rulesets/completeness.js"
+// contractRuleset represents custom spectral ruleset for contract.
+var contractRuleset = "node_modules/@cisco-developer/api-insights-openapi-rulesets/contract.js"
 
 func Flags() []cli.Flag {
 	return []cli.Flag{
 		altsrc.NewStringFlag(&cli.StringFlag{
-			Name:        "completeness-ruleset",
-			Usage:       "Completeness ruleset",
-			Value:       completenessRuleset,
-			Destination: &completenessRuleset,
-			EnvVars:     []string{"COMPLETENESS_RULESET"},
+			Name:        "contract-ruleset",
+			Usage:       "Contract ruleset",
+			Value:       contractRuleset,
+			Destination: &contractRuleset,
+			EnvVars:     []string{"CONTRACT_RULESET"},
 		}),
 	}
 }
 
 func NewClient() (models.SpecDocAnalyzer, error) {
-	sc, err := spectral.NewClient(completenessRuleset)
+	sc, err := spectral.NewClient(contractRuleset)
 	if err != nil {
 		return nil, err
 	}

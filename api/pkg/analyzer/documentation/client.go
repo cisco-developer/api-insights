@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package completeness
+package documentationp
 
 import (
 	"github.com/cisco-developer/api-insights/api/internal/models"
@@ -24,23 +24,23 @@ import (
 	"github.com/urfave/cli/v2/altsrc"
 )
 
-// completenessRuleset represents custom spectral ruleset for completeness.
-var completenessRuleset = "node_modules/@cisco-developer/api-insights-openapi-rulesets/completeness.js"
+// documentationRuleset represents custom spectral ruleset for documentation.
+var documentationRuleset = "node_modules/@cisco-developer/api-insights-openapi-rulesets/documentation.js"
 
 func Flags() []cli.Flag {
 	return []cli.Flag{
 		altsrc.NewStringFlag(&cli.StringFlag{
-			Name:        "completeness-ruleset",
-			Usage:       "Completeness ruleset",
-			Value:       completenessRuleset,
-			Destination: &completenessRuleset,
-			EnvVars:     []string{"COMPLETENESS_RULESET"},
+			Name:        "documentation-ruleset",
+			Usage:       "Documentation ruleset",
+			Value:       documentationRuleset,
+			Destination: &documentationRuleset,
+			EnvVars:     []string{"DOCUMENTATION_RULESET"},
 		}),
 	}
 }
 
 func NewClient() (models.SpecDocAnalyzer, error) {
-	sc, err := spectral.NewClient(completenessRuleset)
+	sc, err := spectral.NewClient(documentationRuleset)
 	if err != nil {
 		return nil, err
 	}

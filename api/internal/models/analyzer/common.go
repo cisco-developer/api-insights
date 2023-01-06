@@ -24,6 +24,8 @@ const (
 	InclusiveLanguage  = SpecAnalyzer("inclusive-language")
 	Drift              = SpecAnalyzer("drift")
 	Completeness       = SpecAnalyzer("completeness")
+	Contract           = SpecAnalyzer("contract")
+	Documentation      = SpecAnalyzer("documentation")
 	Security           = SpecAnalyzer("security")
 )
 

@@ -3,8 +3,32 @@
     "name_id": "completeness",
     "title": "Doc Completeness",
     "description": "Doc Completeness",
+    "status": "inactive",
+    "position": 0,
+    "config": {
+      "score_config": {
+        "analyzer_weight": 0.0
+      }
+    }
+  },
+  {
+    "name_id": "contract",
+    "title": "Contract",
+    "description": "API Contract Completeness",
     "status": "active",
     "position": 0,
+    "config": {
+      "score_config": {
+        "analyzer_weight": 0.45
+      }
+    }
+  },
+  {
+    "name_id": "documentation",
+    "title": "Documentation",
+    "description": "API Documentation Completeness",
+    "status": "active",
+    "position": 1,
     "config": {
       "score_config": {
         "analyzer_weight": 0.45
@@ -15,11 +39,11 @@
     "name_id": "guidelines",
     "title": "REST Guidelines",
     "description": "REST Guidelines",
-    "position": 1,
+    "position": 2,
     "status": "active",
     "config": {
       "score_config": {
-        "analyzer_weight": 0.45
+        "analyzer_weight": 0.0
       }
     }
   },
@@ -27,12 +51,12 @@
     "name_id": "security",
     "title": "API Security",
     "description": "API Security",
-    "position": 2,
+    "position": 3,
     "status": "inactive",
     "config": {
       "service_name_id_template": "{{ .nameID }}.api.api-insights",
       "score_config": {
-        "analyzer_weight": 0.3
+        "analyzer_weight": 0.0
       }
     }
   },
@@ -40,7 +64,7 @@
     "name_id": "inclusive-language",
     "title": "Inclusive Language",
     "description": "Detect non-inclusive language",
-    "position": 3,
+    "position": 4,
     "status": "active",
     "config": {
       "score_config": {
@@ -52,7 +76,7 @@
     "name_id": "drift",
     "title": "Drift",
     "description": "Drift",
-    "position": 4,
+    "position": 5,
     "status": "active",
     "config": {
       "score_config": {

@@ -1,0 +1,18 @@
+[
+  {
+    "name_id": "description-for-every-attribute",
+    "analyzer_name_id": "documentation",
+    "title": "DEA - Descriptions for Every Attribute",
+    "description": "Some attributes do not provide a description.",
+    "mitigation": "Please add a description for the items identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/description-for-every-attribute-descriptions-for-every-attribute)",
+    "severity": "warning"
+  },
+  {
+    "name_id": "examples-for-every-schema",
+    "analyzer_name_id": "documentation",
+    "title": "For every schema provided in the OAS document, at least one example must be present",
+    "description": "Examples are not provided for some of the schemas.",
+    "mitigation": "Please add examples for the schemas identified. [Reference](https://developer.cisco.com/docs/api-insights/#!documentation-completeness-ruleset/examples-for-every-schemaexamples-for-every-schema)",
+    "severity": "warning"
+  }
+]
